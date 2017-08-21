@@ -1,31 +1,25 @@
 'use strict';
 
-function find(collection, ch) {
-    for (let item of collection) {
-        if (item.key === ch) {
-            return item;
-        }
-    }
-
-    return null;
-}
-
 function summarize(collection) {
     let result = [];
-    for (let item of collection) {
-        let obj = find(result, item)
-        if (obj) {
-            obj.count++;
+    collection.forEach(function(element) {
+        let obj = result.filter(function(x, index) {
+            if (x.key === element) {
+                return element;
+            }
+        });
+        if (obj[0]) {
+            obj[0].count++;
         } else {
-            result.push({key: item, count: 1});
+            result.push({ key: element, count: 1 });
         }
-    }
+    });
     return result;
 }
 
 function split(item) {
     let array = item.split("-");
-    return {key: array[0], count: parseInt(array[1], 10)};
+    return { key: array[0], count: parseInt(array[1], 10) };
 }
 
 function push(result, key, count) {
@@ -36,14 +30,15 @@ function push(result, key, count) {
 
 function expand(collection) {
     let result = [];
-    for (let item of collection) {
+    collection.forEach(function(item, index) {
         if (item.length === 1) {
             result.push(item);
         } else {
-            let {key, count} = split(item);
+            let { key, count } = split(item);
             push(result, key, count);
         }
-    }
+
+    });
     return result;
 }
 

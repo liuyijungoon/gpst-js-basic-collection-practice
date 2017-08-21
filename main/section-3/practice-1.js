@@ -6,7 +6,6 @@ function includes(collection, ch) {
             return true;
         }
     }
-
     return false;
 }
 
@@ -18,7 +17,7 @@ module.exports = function createUpdatedCollection(collectionA, objectB) {
         if (includes(objectB.value, key)) {
             count--;
         }
-        result.push({key, count});
+        result.push({ key, count });
     }
     return result;
 }

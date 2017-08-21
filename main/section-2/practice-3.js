@@ -1,43 +1,37 @@
 'use strict';
 
-function find(collection, ch) {
-    for (let item of collection) {
-        if (item.name === ch) {
-            return item;
-        }
-    }
-
-    return null;
-}
-
 function summarize(collection) {
     let result = [];
-    for (let item of collection) {
-        let obj = find(result, item)
-        if (obj) {
-            obj.summary++;
+    collection.forEach(function(element) {
+        let obj = result.filter(function(x, index) {
+            if (x.name === element) {
+                return element;
+            }
+        });
+        if (obj[0]) {
+            obj[0].summary++;
         } else {
-            result.push({name: item, summary: 1});
+            result.push({ name: element, summary: 1 });
         }
-    }
+    });
     return result;
 }
 
 function split(item) {
     if (item.includes("-")) {
         let array = item.split("-");
-        return {key: array[0], count: parseInt(array[1], 10)};
+        return { key: array[0], count: parseInt(array[1], 10) };
     }
 
     if (item.includes("[")) {
         let key = item.charAt(0);
         let count = parseInt(item.substr(2, item.length - 1));
-        return {key, count};
+        return { key, count };
     }
 
     if (item.includes(":")) {
         let array = item.split(":");
-        return {key: array[0], count: parseInt(array[1], 10)};
+        return { key: array[0], count: parseInt(array[1], 10) };
     }
 }
 
@@ -49,14 +43,15 @@ function push(result, key, count) {
 
 function expand(collection) {
     let result = [];
-    for (let item of collection) {
+    collection.forEach(function(item, index) {
         if (item.length === 1) {
             result.push(item);
         } else {
-            let {key, count} = split(item);
+            let { key, count } = split(item);
             push(result, key, count);
         }
-    }
+
+    });
     return result;
 }
 
